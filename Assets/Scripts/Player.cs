@@ -4,33 +4,30 @@ using UnityEngine;
 
 public class player : MonoBehaviour
 {
+    private float speed = 8f;
     private float horizontal;
     private Rigidbody2D  rb;
     private bool isFacingRight = true;
-    public Animator animator;
+    private Animator animator;
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
+        this.rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         horizontal = Input.GetAxis("Horizontal");
         Debug.Log(horizontal);
-        this.rb.velocity = new Vector2(horizontal * 8f, rb.velocity.y);
+        this.rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            this.rb.AddForce(Vector2.up * 15f, ForceMode2D.Impulse);
+        }
+       
         animator.SetFloat("speed", Mathf.Abs(horizontal));
         Flip();
-        /*if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Debug.Log("Apertou espaço");
-        }
-        if (Input.GetMouseButtonDown(0)) 
-        {
-            Debug.Log("Clicou com o botao direito");
-        }
-        */
     }
 
     private void Flip()
